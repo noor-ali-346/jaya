@@ -6,7 +6,7 @@ from typing import Optional
 
 from SaitamaRobot import (ALLOW_EXCL, CERT_PATH, DONATION_LINK, LOGGER,
                           OWNER_ID, PORT, SUPPORT_CHAT, TOKEN, URL, WEBHOOK,
-                          dispatcher, StartTime, telethn, updater,igris)
+                          dispatcher, StartTime, telethn, updater)
 # needed to dynamically load modules
 # NOTE: Module order is not guaranteed, specify that in the config file!
 from SaitamaRobot.modules import ALL_MODULES
@@ -51,21 +51,21 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-Hello {},My Name is IGRIS
-𝐈 𝐀𝐌 𝐀 𝐑𝐎𝐘𝐀𝐋 𝐊𝐍𝐈𝐆𝐇𝐓 𝐅𝐑𝐎𝐌 𝐒𝐎𝐋𝐎 𝐋𝐄𝐕𝐄𝐋𝐈𝐍𝐆.
-I will help you manage your group.
-TO KNOW MY COMMANDS CLICK /help.
+Hi {}, my name is {}! 
+I am an Anime themed group management bot.
+I am an Amazing group management bot.
+Made With ❤ I specialize in managing your group with my advance features.
+You can find my list of available commands with /help..
 """
 
 HELP_STRINGS = """
 Hey there! My name is *{}*.
-I'm a Shadow From Solo Leveling,I will help you manage your groups! Have a look at the following for an idea of some of \
-the things I can help you with.
+I am a group management bot, here to help you get around and keep the order in your groups!
 
 *Main* commands available:
+ • /start: start the bot
  • /help: PM's you this message.
  • /help <module name>: PM's you info about that module.
- • /donate: information on how to donate!
  • /settings:
    • in PM: will send you your settings for all supported modules.
    • in a group: will redirect you to pm, with all that chat's settings.
@@ -77,9 +77,11 @@ And the following:
     dispatcher.bot.first_name, ""
     if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n")
 
-SAITAMA_IMG = "https://telegra.ph/file/3d6b5ac78befd0bffac47.mp4"
+SAITAMA_IMG = "https://telegra.ph/file/f4b35ad2d1b79ffda363e.jpg"
 
-DONATE_STRING = """donate to the original writer of the Base code, Paul
+DONATE_STRING = """Heya, glad to hear you want to donate!
+Saitama is hosted on one of Kaizoku's Servers and doesn't require any donations as of now but \
+You can donate to the original writer of the Base code, Paul
 There are two ways of supporting him; [PayPal](paypal.me/PaulSonOfLars), or [Monzo](monzo.me/paulnionvestergaardlarsen)."""
 
 IMPORTED = {}
@@ -148,6 +150,7 @@ def test(update: Update, context: CallbackContext):
     update.effective_message.reply_text("This person edited a message")
     print(update.effective_message)
 
+
 @run_async
 def start(update: Update, context: CallbackContext):
     args = context.args
@@ -156,45 +159,60 @@ def start(update: Update, context: CallbackContext):
         if len(args) >= 1:
             if args[0].lower() == "help":
                 send_help(update.effective_chat.id, HELP_STRINGS)
-
+            elif args[0].lower() == "markdownhelp":
+                IMPORTED["extras"].markdown_help_sender(update)
+            elif args[0].lower() == "disasters":
+                IMPORTED["disasters"].send_disasters(update)
             elif args[0].lower().startswith("stngs_"):
                 match = re.match("stngs_(.*)", args[0].lower())
                 chat = dispatcher.bot.getChat(match.group(1))
 
                 if is_user_admin(chat, update.effective_user.id):
-                    send_settings(match.group(1), update.effective_user.id, False)
+                    send_settings(
+                        match.group(1), update.effective_user.id, False)
                 else:
-                    send_settings(match.group(1), update.effective_user.id, True)
+                    send_settings(
+                        match.group(1), update.effective_user.id, True)
 
             elif args[0][1:].isdigit() and "rules" in IMPORTED:
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
         else:
             first_name = update.effective_user.first_name
-            update.effective_message.reply_animation(
+            update.effective_message.reply_photo(
                 SAITAMA_IMG,
-                caption=PM_START_TEXT.format(escape_markdown(first_name), escape_markdown(context.bot.first_name), OWNER_ID),
+                PM_START_TEXT.format(
+                    escape_markdown(first_name),
+                    escape_markdown(context.bot.first_name)),
                 parse_mode=ParseMode.MARKDOWN,
-                reply_markup=InlineKeyboardMarkup(                   
-                          [[
-                              InlineKeyboardButton(
-                              text="🔥Add IGRIS To Your Group🔥",
-                              url="t.me/{}?startgroup=true".format(
-                                  context.bot.username))
-                          ], 
-                          [
-                              InlineKeyboardButton(
-                              text="🍁Support Group🍁",
-                              url=f"https://t.me/IGRISBOTSUPPORT"),
-                              InlineKeyboardButton(
-                              text="✨Updates Channel✨",
-                              url="https://t.me/IGRISROBOT_SUPPORT")
-                          ]])) 
+                disable_web_page_preview=True,
+                reply_markup=InlineKeyboardMarkup(
+                    [[
+                        InlineKeyboardButton(
+                            text=" Add Asuna To Your Group",
+                            url="t.me/{}?startgroup=true".format(
+                                context.bot.username))
+                    ],
+                     [
+                         InlineKeyboardButton(
+                             text="Support Group",
+                             url=f"https://t.me/eaglejusticeassociation"),
+                         InlineKeyboardButton(
+                             text="logs Channel",
+                             url="https://t.me/eagleslogs")
+                     ],
+                     [
+                         InlineKeyboardButton(
+                             text=" Getting started guide",
+                             url="https://t.me/eaglejusticeassociation")
+                     ],
+                     [
+                         InlineKeyboardButton(
+                             text="Source Code (Licensed under GPLv3)",
+                             url="https://github.com/noor-ali-346/botanie")
+                     ]]))
     else:
-        update.effective_message.reply_text(
-            "I'm online!\n<b>Up since:</b> <code>{}</code>".format(uptime),
-            parse_mode=ParseMode.HTML)
-
+        update.effective_message.reply_text ("Is there anything I can help? 😊")
 
 # for test purposes
 def error_callback(update: Update, context: CallbackContext):
