@@ -1,15 +1,10 @@
-import html
-import random
 import time
-from typing import List
-
-from telegram import Bot, Update, ParseMode
-from telegram.ext import run_async
 
 from SaitamaRobot import dispatcher
 from SaitamaRobot.modules.disable import DisableAbleCommandHandler
-from SaitamaRobot.modules.helper_funcs.chat_status import is_user_admin, user_admin
-from SaitamaRobot.modules.helper_funcs.extraction import extract_user
+from SaitamaRobot.modules.helper_funcs.chat_status import user_admin
+from telegram import Update
+from telegram.ext import CallbackContext, run_async
 
 #sleep how many times after each edit in 'love' 
 EDIT_SLEEP = 1
