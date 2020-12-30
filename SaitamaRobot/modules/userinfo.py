@@ -274,7 +274,7 @@ def info(update: Update, context: CallbackContext):
         text += "\n\nThe HUNTER SKILL of this person is 'INFINITE'."
         disaster_level_present = True
     elif user.id in DEV_USERS:
-        text += "\n\nThis user is CO-OWNER of '🍁SOLO•GUILD🍁'."
+        text += "\n\nThis user is CO-OWNER of 'Eagle association'."
         disaster_level_present = True
     elif user.id in DRAGONS:
         text += "\n\nThe HUNTER SKILL of this person is 'S-RANK'."
@@ -290,7 +290,7 @@ def info(update: Update, context: CallbackContext):
         disaster_level_present = True
 
     if disaster_level_present:
-        text += ' [<a href="https://t.me/IGRISROBOT_SUPPORT/2">?</a>]'.format(
+        text += ' [<a href="https://t.me/eaglejusticeassociation">here</a>]'.format(
             bot.username)
 
     try:
