@@ -1,7 +1,7 @@
 from telegram import ParseMode
 
-from Harry_Potter import dispatcher
-from Harry_Potter.modules.disable import DisableAbleCommandHandler
+from SaitamaRobot import dispatcher
+from SaitamaRobot.modules.disable import DisableAbleCommandHandler
 
 normiefont = [
     "a",
