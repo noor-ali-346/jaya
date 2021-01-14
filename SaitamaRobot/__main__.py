@@ -203,11 +203,6 @@ def start(update: Update, context: CallbackContext):
                      ],
                      [
                          InlineKeyboardButton(
-                             text=" Getting started guide",
-                             url="https://t.me/eaglejusticeassociation")
-                     ],
-                     [
-                         InlineKeyboardButton(
                              text="Source Code (Licensed under GPLv3)",
                              url="https://github.com/noor-ali-346/AsunaRobot")
                      ]]))
